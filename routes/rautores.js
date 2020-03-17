@@ -1,27 +1,29 @@
-module.exports = function(app, swig) {
+module.exports = function (app, swig) {
     app.get('/autores/agregar', function (req, res) {
+        let roles = [{"nombre": "Cantante"}, {"nombre": "Batería"}, {"nombre": "Bajista"},
+            {"nombre": "Teclista"}, {"nombre": "Guitarrista"}];
         let respuesta = swig.renderFile('views/autores-agregar.html', {
+            roles: roles
         });
         res.send(respuesta);
     });
 
-    app.get("/autores", function(req, res) {
+    app.get("/autores", function (req, res) {
         let autores = [{
             "nombre": "Luis Hurlé",
             "grupo": "Canarios Malos",
-            "rol" : "Cantante"
+            "rol": "Cantante"
         }, {
             "nombre": "Carlos Fleitas",
             "grupo": "La Isla Rebelde",
-            "rol" : "Batería"
+            "rol": "Batería"
         }, {
             "nombre": "Carlos Hurlé",
             "grupo": "La Papaya",
-            "rol" : "Bajista"
+            "rol": "Bajista"
         }];
 
         let respuesta = swig.renderFile('views/autores.html', {
-            vendedor: 'Tienda de canciones',
             autores: autores
         });
 
@@ -29,12 +31,20 @@ module.exports = function(app, swig) {
     });
 
     app.post("/autor", function (req, res) {
-        res.send("Autor agregado: " + req.body.nombre + "<br>"
-            + " Grupo : " + req.body.grupo + "<br>"
-            + " Rol: " + req.body.rol);
+        let respuesta = "";
+        if (typeof (req.body.nombre) != "undefined") {
+            respuesta += 'Nombre: ' + req.body.nombre + '<br>'
+        }
+        if (typeof (req.body.grupo) != "undefined") {
+            respuesta += 'Grupo: ' + req.body.grupo + '<br>'
+        }
+        if (typeof (req.body.rol) != "undefined") {
+            respuesta += 'Rol: ' + req.body.rol + '<br>'
+        }
+        res.send(respuesta);
     });
 
-    app.get('/aut*', function (req, res) {
+    app.get('/autores/*', function (req, res) {
         res.redirect('/autores');
     });
 
