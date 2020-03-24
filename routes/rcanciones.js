@@ -41,15 +41,22 @@ module.exports = function (app, swig, gestorBD) {
 
     app.get('/cancion/:id', function (req, res) {
         let criterio = {"_id": gestorBD.mongo.ObjectID(req.params.id)};
+        let criterio1 = { "cancion_id" : gestorBD.mongo.ObjectID(req.params.id) };
         gestorBD.obtenerCanciones(criterio, function (canciones) {
             if (canciones == null) {
                 res.send(respuesta);
             } else {
-                let respuesta = swig.renderFile('views/bcancion.html',
-                    {
-                        cancion: canciones[0]
+                gestorBD.obtenerComentarios(criterio1, function(comentarios){
+                    if(comentarios == null){
+                        res.send(respuesta);
+                    }
+                    let respuesta = swig.renderFile('views/bcancion.html',{
+                        cancion: canciones[0],
+                        comentarios: comentarios
+
                     });
-                res.send(respuesta);
+                    res.send(respuesta);
+                })
             }
         });
     });
