@@ -102,11 +102,17 @@ app.get('/', function (req, res) {
     res.redirect('/tienda');
 })
 
+app.get('/error/:error',function(req, res){
+    let respuesta = swig.renderFile('views/error.html');
+    res.send(respuesta);
+})
+
 app.use(function (err, req, res, next) {
     console.log("Error producido: " + err);
     if (!res.headersSent) {
         res.status(400);
-        res.send("Recurso no disponible");
+        res.redirect('/error/err');
+
     }
 });
 
