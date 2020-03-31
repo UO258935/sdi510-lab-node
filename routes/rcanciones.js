@@ -50,12 +50,35 @@ module.exports = function (app, swig, gestorBD) {
                     if (comentarios == null) {
                         res.send(respuesta);
                     }
-                    let respuesta = swig.renderFile('views/bcancion.html', {
-                        cancion: canciones[0],
-                        comentarios: comentarios
+                    if(canciones == null){
+                        res.send(respuesta);
+                    }
+                    else{
+                        let author = false;
+                        if(canciones[0].autor==req.session.usuario){
+                            author = true;
+                        }
+                        let criterioCompras = {"cancionId": gestorBD.mongo.ObjectID(req.params.id)};
+                        gestorBD.obtenerCanciones(criterioCompras, function (compras) {
+                            if(compras == null){
+                                res.send(respuesta);
+                            }
+                            else{
+                                for(i=0;i<compras.length;i++){
+                                    if(compras[i].usuario.toString()===req.session.usuario.toString()){
+                                        author = true;
+                                    }
+                                }
+                                let respuesta = swig.renderFile('views/bcancion.html', {
+                                    cancion: canciones[0],
+                                    comentarios: comentarios,
+                                    author: author
 
-                    });
-                    res.send(respuesta);
+                                });
+                                res.send(respuesta);
+                            }
+                        })
+                    }
                 })
             }
         });
