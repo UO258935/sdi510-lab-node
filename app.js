@@ -15,6 +15,8 @@ let fs = require('fs');
 let https = require('https');
 var jwt = require('jsonwebtoken');
 app.set('jwt', jwt);
+let rest = require('request');
+app.set('rest', rest);
 
 let fileUpload = require('express-fileupload');
 app.use(fileUpload());
