@@ -13,7 +13,7 @@
         <thead>
         <tr>
             <th><a onclick="ordenarPorNombre()">Nombre</a></th>
-            <th>Genero</th>
+            <th><a onclick="ordenarPorGenero()">Genero</a></th>
             <th><a onclick="ordenarPorPrecio()">Precio</a></th>
             <th class="col-md-1"></th>
         </tr>
@@ -98,6 +98,17 @@
             actualizarTabla(cancionesFiltradas);
         });
 
+        $('#filtro-genero').on('input', function (e) {
+            var cancionesFiltradas = [];
+            var generoFiltro = $("#filtro-genero").val();
+            for (i = 0; i < canciones.length; i++) {
+                if (canciones[i].nombre.indexOf(generoFiltro) != -1) {
+                    cancionesFiltradas.push(canciones[i]);
+                }
+            }
+            actualizarTabla(cancionesFiltradas);
+        });
+
         var precioDsc = true;
 
         function ordenarPorPrecio() {
@@ -120,6 +131,15 @@
                 if (a.nombre < b.nombre) return -1;
                 return 0;
             });
+            actualizarTabla(canciones);
+        }
+
+        function ordenarPorGenero() {
+            canciones.sort(function (a, b) {
+                if(a.genero > b.genero) return 1;
+                if(a.genero < b.genero) return -1;
+                return 0;
+            })
             actualizarTabla(canciones);
         }
     </script>

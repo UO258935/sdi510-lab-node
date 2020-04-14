@@ -30,7 +30,7 @@ module.exports = function (app, gestorBD) {
                 res.status(500);
                 res.json({error: "se ha producido un error"})
             }
-            else if(canciones[0].autor!=res.usuario){
+            else if(canciones.autor !== res.usuario){
                 res.status(500);
                 res.json({error: "ha de ser el propietario para eliminar una canción"})
             }
@@ -77,7 +77,7 @@ module.exports = function (app, gestorBD) {
                     res.status(500);
                     res.json({error: "se ha producido un error"})
                 }
-                else if(cancion[0].autor!=res.usuario){
+                else if(canciones.autor !== res.usuario){
                     res.status(500);
                     res.json({error: "ha de ser el autor para modificar una canción"})
                 }
